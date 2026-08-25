@@ -43,7 +43,8 @@
     background:radial-gradient(circle at 60% 60%, rgba(255,255,255,.09), rgba(255,255,255,0) 70%);
     bottom:-100px; right:-80px;
   }
-  .login-visual .top-logo{position:relative; z-index:2; height:40px; filter:brightness(0) invert(1);}
+  .login-visual .top-logo-plate{position:relative; z-index:2; display:inline-block; background:#fff; padding:16px 26px; border-radius:16px; box-shadow:0 10px 26px rgba(0,0,0,.18); width:fit-content;}
+  .login-visual .top-logo{display:block; height:56px;}
   .login-visual .pitch{position:relative; z-index:2; max-width:420px;}
   .login-visual .pitch .eyebrow{color:var(--gold); font-weight:700; font-size:13px; letter-spacing:.06em; margin-bottom:14px;}
   .login-visual .pitch h1{font-size:32px; font-weight:800; line-height:1.5; margin:0 0 14px;}
@@ -71,8 +72,8 @@
   .btn-primary:hover{background:var(--navy-700);}
   .btn-primary:active{transform:translateY(1px);}
   .error{color:var(--danger); font-size:13px; margin:-6px 0 14px; font-weight:600;}
-  .demo-note{background:var(--gold-pale); border:1px solid var(--gold-soft); color:#8A5A00; font-size:12px; border-radius:var(--radius-sm); padding:12px 14px; margin-top:20px; line-height:1.8;}
-  .creds-hint{margin-top:18px; font-size:11.5px; color:var(--muted-2); text-align:center;}
+  .creds-hint{margin-top:22px; font-size:12px; color:var(--muted); text-align:center; background:#FAFAFD; border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 12px; line-height:2;}
+  .creds-hint b{color:var(--navy-800);}
 
   @media (max-width: 860px){
     #loginScreen{flex-direction:column;}
@@ -87,8 +88,9 @@
     width:236px; flex-shrink:0; background:var(--navy-800); color:#fff;
     display:flex; flex-direction:column; padding:26px 18px; position:sticky; top:0; height:100vh;
   }
-  .side-logo-box{display:flex; align-items:center; gap:10px; padding:0 6px 26px; border-bottom:1px solid rgba(255,255,255,.1); margin-bottom:20px; position:relative;}
-  .side-logo-box img{height:30px; filter:brightness(0) invert(1);}
+  .side-logo-box{display:flex; align-items:center; gap:10px; padding:0 0 22px; border-bottom:1px solid rgba(255,255,255,.1); margin-bottom:20px; position:relative;}
+  .side-logo-box .logo-plate{background:#fff; border-radius:12px; padding:10px 16px; box-shadow:0 6px 16px rgba(0,0,0,.15);}
+  .side-logo-box img{height:32px; display:block;}
   .side-leaf{position:absolute; top:-14px; left:6px; width:36px; height:36px; border-radius:60% 40% 40% 60%/60% 40% 60% 40%; background:radial-gradient(circle at 35% 35%, var(--gold), rgba(245,166,35,0) 70%); opacity:.55; pointer-events:none;}
 
   nav.side-nav{display:flex; flex-direction:column; gap:4px; flex:1;}
@@ -195,23 +197,17 @@
 <!-- ============ LOGIN ============ -->
 <div id="loginScreen">
   <div class="login-visual">
-    <img class="top-logo" id="logoImgLogin" alt="EgyGulf Foods" />
+    <div class="top-logo-plate"><img class="top-logo" id="logoImgLogin" alt="EgyGulf Foods" /></div>
     <div class="pitch">
       <p class="eyebrow">EGYGULF FOODS — إدارة الصادرات</p>
       <h1>متابعة استرداد عوايد التصدير في مكان واحد، لكل فريق دوره بالظبط.</h1>
       <p>من تسجيل الشحنة لحد صرف الاسترداد، كل قسم بيشتغل في نطاقه، وكل حاجة متزامنة أول بأول.</p>
     </div>
-    <div class="roles-strip">
-      <span class="rchip">أستاذة شيماء</span>
-      <span class="rchip">أستاذة منال</span>
-      <span class="rchip">مسئول الماليه</span>
-      <span class="rchip">الأدمن</span>
-    </div>
   </div>
 
   <div class="login-form-side">
     <form class="login-card" id="loginForm">
-      <img class="mobile-logo" id="logoImgLoginMobile" alt="EgyGulf Foods" style="height:32px;margin-bottom:20px;" />
+      <img class="mobile-logo" id="logoImgLoginMobile" alt="EgyGulf Foods" style="height:44px;margin-bottom:20px;" />
       <h2>تسجيل الدخول</h2>
       <p class="sub">اكتب بيانات حسابك للمتابعة</p>
 
@@ -226,8 +222,6 @@
 
       <div class="error hidden" id="loginError"></div>
       <button class="btn-primary" type="submit" id="loginBtn">دخول</button>
-      <div class="demo-note" id="demoNote"></div>
-      <p class="creds-hint" id="credsHint"></p>
     </form>
   </div>
 </div>
@@ -237,7 +231,7 @@
   <aside class="sidebar">
     <div class="side-logo-box">
       <div class="side-leaf"></div>
-      <img id="logoImgSide" alt="EgyGulf Foods" />
+      <div class="logo-plate"><img id="logoImgSide" alt="EgyGulf Foods" /></div>
     </div>
     <nav class="side-nav">
       <button data-view="dashboard" class="nav-btn">
@@ -354,14 +348,7 @@ const firebaseConfig = {
 };
 const FIREBASE_CONFIGURED = !firebaseConfig.apiKey.startsWith("PASTE_");
 
-if (!FIREBASE_CONFIGURED) {
-  document.getElementById("demoNote").innerHTML =
-    `⚡ وضع تجريبي: البيانات متخزنة في هذا المتصفح بس. لتزامن حقيقي بين الأجهزة، حط بيانات Firebase في أول الكود.`;
-  document.getElementById("credsHint").innerHTML =
-    `admin/admin123 · shimaa/shimaa123 · manal/manal123 · finance/finance123`;
-} else {
-  document.getElementById("demoNote").classList.add("hidden");
-}
+// وضع محلي بلا Firebase: البيانات بتتخزن في هذا المتصفح فقط.
 
 let db = null;
 if (FIREBASE_CONFIGURED) {
