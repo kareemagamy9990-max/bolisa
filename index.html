@@ -85,12 +85,12 @@
   /* ============ APP SHELL ============ */
   #appShell{min-height:100vh; display:flex;}
   aside.sidebar{
-    width:236px; flex-shrink:0; background:var(--navy-800); color:#fff;
+    width:260px; flex-shrink:0; background:var(--navy-800); color:#fff;
     display:flex; flex-direction:column; padding:26px 18px; position:sticky; top:0; height:100vh;
   }
   .side-logo-box{display:flex; align-items:center; gap:10px; padding:0 0 22px; border-bottom:1px solid rgba(255,255,255,.1); margin-bottom:20px; position:relative;}
-  .side-logo-box .logo-plate{background:#fff; border-radius:12px; padding:10px 16px; box-shadow:0 6px 16px rgba(0,0,0,.15);}
-  .side-logo-box img{height:32px; display:block;}
+  .side-logo-box .logo-plate{background:#fff; border-radius:14px; padding:12px 18px; box-shadow:0 6px 16px rgba(0,0,0,.15); width:100%; display:flex; justify-content:center;}
+  .side-logo-box img{height:46px; display:block;}
   .side-leaf{position:absolute; top:-14px; left:6px; width:36px; height:36px; border-radius:60% 40% 40% 60%/60% 40% 60% 40%; background:radial-gradient(circle at 35% 35%, var(--gold), rgba(245,166,35,0) 70%); opacity:.55; pointer-events:none;}
 
   nav.side-nav{display:flex; flex-direction:column; gap:4px; flex:1;}
@@ -162,9 +162,10 @@
   tbody td{padding:6px; border-bottom:1px solid #F3F3F8;}
   tbody tr:hover td{background:#FBFBFE;}
   tbody tr:last-child td{border-bottom:none;}
-  td input{margin:0; padding:8px 10px; font-size:13px; border-radius:var(--radius-sm); border:1.5px solid transparent; background:transparent;}
-  td input:not(:disabled):hover{border-color:var(--border); background:#fff;}
+  td input{margin:0; padding:8px 10px; font-size:13px; border-radius:var(--radius-sm); border:1.5px solid var(--border); background:#FDFDFE;}
+  td input:not(:disabled):hover{border-color:#C9CBE0; background:#fff;}
   td input:not(:disabled):focus{border-color:var(--gold); background:#fff; box-shadow:0 0 0 3px var(--gold-pale);}
+  td.locked input{background:transparent; border-color:transparent;}
   td.locked{background:repeating-linear-gradient(135deg, #FAFAFD, #FAFAFD 7px, #F3F3F8 7px, #F3F3F8 14px);}
   td.locked input{color:#A6A9BE; cursor:not-allowed;}
   .del-btn{background:transparent; color:var(--danger); font-size:12px; padding:6px 10px; font-weight:700; border-radius:var(--radius-sm);}
