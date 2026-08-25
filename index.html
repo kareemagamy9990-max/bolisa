@@ -182,6 +182,13 @@
   td.locked input{color:#A6A9BE; cursor:not-allowed;}
   .del-btn{background:transparent; color:var(--danger); font-size:12px; padding:6px 10px; font-weight:700; border-radius:var(--radius-sm);}
   .del-btn:hover{background:#FDECEC;}
+  .save-row-btn{background:#EFEFF6; color:#6B6E8A; font-size:12px; padding:6px 14px; font-weight:700; border-radius:999px; white-space:nowrap;}
+  .save-row-btn.has-changes{background:var(--gold); color:#3A2600; box-shadow:0 0 0 3px var(--gold-pale);}
+  .save-row-btn:hover{filter:brightness(.97);}
+  .save-row-btn:disabled{opacity:.6;}
+  .saved-flag{font-size:11px; margin-right:6px; font-weight:700;}
+  .saved-flag.ok{color:var(--success);}
+  .saved-flag.muted{color:var(--muted);}
   .empty-row td{text-align:center; color:var(--muted); padding:40px; font-size:13.5px;}
   .hint{color:var(--muted-2); font-size:12px; margin-top:14px; display:flex; align-items:center; gap:6px;}
   .hint .swatch{width:14px; height:10px; border-radius:3px; background:repeating-linear-gradient(135deg, #FAFAFD, #FAFAFD 4px, #F3F3F8 4px, #F3F3F8 8px); border:1px solid var(--border); display:inline-block;}
@@ -635,8 +642,10 @@ function switchView(name) {
    ========================================================================= */
 function buildTableHead() {
   document.getElementById("tableHead").innerHTML =
-    FIELDS.map((f) => `<th>${f.label}</th>`).join("") + (canDeleteRow(currentUser.role) ? "<th></th>" : "");
+    FIELDS.map((f) => `<th>${f.label}</th>`).join("") + `<th>حفظ</th>` + (canDeleteRow(currentUser.role) ? "<th></th>" : "");
 }
+
+const pendingEdits = {}; // { rowId: { field: value } }
 
 function renderShipmentsTable() {
   const filter = document.getElementById("filterCountry").value.trim();
@@ -644,7 +653,7 @@ function renderShipmentsTable() {
   const body = document.getElementById("tableBody");
 
   if (rows.length === 0) {
-    body.innerHTML = `<tr class="empty-row"><td colspan="${FIELDS.length + 1}">مفيش شحنات لسه — ابدأ بإضافة شحنة جديدة</td></tr>`;
+    body.innerHTML = `<tr class="empty-row"><td colspan="${FIELDS.length + 2}">مفيش شحنات لسه — ابدأ بإضافة شحنة جديدة</td></tr>`;
     return;
   }
 
@@ -658,17 +667,43 @@ function renderShipmentsTable() {
           data-id="${row.id}" data-key="${f.key}" ${editable ? "" : "disabled"} />
       </td>`;
     }).join("");
+    const canEditThisRow = FIELDS.some((f) => canEditField(currentUser.role, f.key));
+    const saveCell = `<td>${canEditThisRow ? `<button class="save-row-btn" data-saverow="${row.id}">حفظ</button><span class="saved-flag" data-savedflag="${row.id}"></span>` : ""}</td>`;
     const delCell = canDeleteRow(currentUser.role) ? `<td><button class="del-btn" data-del="${row.id}">حذف</button></td>` : "";
-    return `<tr>${cells}${delCell}</tr>`;
+    return `<tr>${cells}${saveCell}${delCell}</tr>`;
   }).join("");
 
   body.querySelectorAll("input").forEach((inp) => {
-    inp.addEventListener("change", (e) => {
+    inp.addEventListener("input", (e) => {
       const id = e.target.dataset.id, key = e.target.dataset.key;
       if (!canEditField(currentUser.role, key)) return;
-      Store.updateShipment(id, { [key]: e.target.value, updatedBy: currentUser.username });
+      if (!pendingEdits[id]) pendingEdits[id] = {};
+      pendingEdits[id][key] = e.target.value;
+      const btn = body.querySelector(`[data-saverow="${id}"]`);
+      if (btn) btn.classList.add("has-changes");
+      const flag = body.querySelector(`[data-savedflag="${id}"]`);
+      if (flag) flag.textContent = "";
     });
   });
+
+  body.querySelectorAll("[data-saverow]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const id = btn.dataset.saverow;
+      const patch = pendingEdits[id];
+      const flag = body.querySelector(`[data-savedflag="${id}"]`);
+      if (!patch || Object.keys(patch).length === 0) {
+        if (flag) { flag.textContent = "مفيش تغيير"; flag.className = "saved-flag muted"; }
+        return;
+      }
+      btn.disabled = true; btn.textContent = "...";
+      await Store.updateShipment(id, { ...patch, updatedBy: currentUser.username });
+      delete pendingEdits[id];
+      btn.disabled = false; btn.textContent = "حفظ";
+      btn.classList.remove("has-changes");
+      if (flag) { flag.textContent = "✓ اتحفظ"; flag.className = "saved-flag ok"; setTimeout(() => { flag.textContent = ""; }, 2500); }
+    });
+  });
+
   body.querySelectorAll("[data-del]").forEach((btn) => {
     btn.addEventListener("click", () => { if (confirm("متأكد عايز تحذف الشحنة دي؟")) Store.deleteShipment(btn.dataset.del); });
   });
