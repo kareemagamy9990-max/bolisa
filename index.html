@@ -503,6 +503,21 @@ let shipmentsCache = [];
 let unsubShipments = null;
 let unsubUsers = null;
 
+const DEFAULT_USERS = [
+  { username: "admin", password: "admin123", name: "الأدمن", role: "admin" },
+  { username: "shimaa", password: "shimaa123", name: "أستاذة شيماء", role: "shimaa" },
+  { username: "manal", password: "manal123", name: "أستاذة منال", role: "manal" },
+  { username: "finance", password: "finance123", name: "مسئول الماليه", role: "finance" },
+];
+
+async function seedFirestoreUsersIfEmpty() {
+  const snap = await db.collection("users").limit(1).get();
+  if (!snap.empty) return;
+  const batch = db.batch();
+  DEFAULT_USERS.forEach((u) => batch.set(db.collection("users").doc(), u));
+  await batch.commit();
+}
+
 if (!FIREBASE_CONFIGURED) seedLocalUsersIfEmpty();
 
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
@@ -514,6 +529,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   const btn = document.getElementById("loginBtn");
   btn.disabled = true; btn.textContent = "...";
   try {
+    if (FIREBASE_CONFIGURED) await seedFirestoreUsersIfEmpty();
     const user = await Store.findUserByUsername(username);
     if (!user || user.password !== password) throw new Error("بيانات الدخول غلط");
     currentUser = user;
