@@ -166,15 +166,16 @@
   .btn-small:hover{background:var(--navy-700);}
 
   .table-wrap{overflow-x:auto; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-card);}
-  table{width:100%; border-collapse:collapse; font-size:13px;}
+  table{width:100%; border-collapse:collapse; font-size:14.5px;}
   thead th{
-    background:#FAFAFD; color:#5B5E7A; text-align:right; padding:13px 10px; white-space:nowrap;
-    border-bottom:1.5px solid var(--border); font-weight:700; font-size:12.5px; position:sticky; top:0;
+    background:#FAFAFD; color:#5B5E7A; text-align:right; padding:14px 12px; white-space:nowrap;
+    border-bottom:1.5px solid var(--border); font-weight:700; font-size:13.5px; position:sticky; top:0;
+    min-width:150px;
   }
-  tbody td{padding:6px; border-bottom:1px solid #F3F3F8;}
+  tbody td{padding:7px; border-bottom:1px solid #F3F3F8; min-width:150px;}
   tbody tr:hover td{background:#FBFBFE;}
   tbody tr:last-child td{border-bottom:none;}
-  td input{margin:0; padding:8px 10px; font-size:13px; border-radius:var(--radius-sm); border:1.5px solid var(--border); background:#FDFDFE;}
+  td input{margin:0; padding:11px 12px; font-size:15px; border-radius:var(--radius-sm); border:1.5px solid var(--border); background:#FDFDFE; width:100%; min-width:130px;}
   td input:not(:disabled):hover{border-color:#C9CBE0; background:#fff;}
   td input:not(:disabled):focus{border-color:var(--gold); background:#fff; box-shadow:0 0 0 3px var(--gold-pale);}
   td.locked input{background:transparent; border-color:transparent;}
