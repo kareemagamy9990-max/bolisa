@@ -728,6 +728,23 @@ function renderShipmentsTable() {
         if (valueInput) valueInput.value = computed;
       }
 
+      // النواقص بتتحدث تلقائي حسب حالة نموذج 13 وبوليصة الشحن
+      if (key === "form13" || key === "bol") {
+        const rowData = shipmentsCache.find((r) => r.id === id) || {};
+        const f13 = pendingEdits[id].form13 ?? rowData.form13 ?? "";
+        const bolVal = pendingEdits[id].bol ?? rowData.bol ?? "";
+        if (f13 && bolVal) {
+          let shortageText;
+          const missing = [];
+          if (f13 !== "تم الاستلام") missing.push("نموذج 13");
+          if (bolVal !== "تم الاستلام") missing.push("بوليصة الشحن");
+          shortageText = missing.length === 0 ? "لا يوجد نواقص" : missing.join("، ");
+          pendingEdits[id].shortages = shortageText;
+          const shortagesInput = body.querySelector(`[data-id="${id}"][data-key="shortages"]`);
+          if (shortagesInput) shortagesInput.value = shortageText;
+        }
+      }
+
       const btn = body.querySelector(`[data-saverow="${id}"]`);
       if (btn) btn.classList.add("has-changes");
       const flag = body.querySelector(`[data-savedflag="${id}"]`);
