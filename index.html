@@ -176,6 +176,10 @@
   tbody tr:hover td{background:#FBFBFE;}
   tbody tr:last-child td{border-bottom:none;}
   td input{margin:0; padding:11px 12px; font-size:15px; border-radius:var(--radius-sm); border:1.5px solid var(--border); background:#FDFDFE; width:100%; min-width:130px;}
+  td select{margin:0; padding:11px 12px; font-size:15px; border-radius:var(--radius-sm); border:1.5px solid var(--border); background:#FDFDFE; width:100%; min-width:130px; font-family:inherit; color:var(--text);}
+  td select:not(:disabled):hover{border-color:#C9CBE0; background:#fff;}
+  td select:not(:disabled):focus{border-color:var(--gold); background:#fff; box-shadow:0 0 0 3px var(--gold-pale);}
+  td.locked select{background:transparent; border-color:transparent; color:#A6A9BE;}
   td input:not(:disabled):hover{border-color:#C9CBE0; background:#fff;}
   td input:not(:disabled):focus{border-color:var(--gold); background:#fff; box-shadow:0 0 0 3px var(--gold-pale);}
   td.locked input{background:transparent; border-color:transparent;}
@@ -487,8 +491,8 @@ const FIELDS = [
   { key: "shipping_company", label: "شركة الشحن", type: "text", owner: "shimaa" },
   { key: "shipping_company_number", label: "رقم شركة الشحن", type: "text", owner: "shimaa" },
   { key: "shipment_no", label: "رقم الشحنة", type: "text", owner: "shimaa" },
-  { key: "form13", label: "نموذج 13", type: "text", owner: "shimaa" },
-  { key: "bol", label: "بوليصه الشحن", type: "text", owner: "shimaa" },
+  { key: "form13", label: "نموذج 13", type: "select", owner: "shimaa", options: ["تم الاستلام", "لم يتم"] },
+  { key: "bol", label: "بوليصه الشحن", type: "select", owner: "shimaa", options: ["تم الاستلام", "لم يتم"] },
   { key: "invoice_value", label: "قيمة الفاتورة", type: "number", owner: "shimaa" },
   { key: "invoice_type", label: "نوع الفاتورة", type: "text", owner: "shimaa" },
   { key: "invoice_no", label: "رقم الفاتورة", type: "text", owner: "shimaa" },
@@ -506,7 +510,7 @@ const ROLES = {
 
 function canEditField(role, key) { if (role === "admin") return true; const f = FIELDS.find((f) => f.key === key); return f?.owner === role; }
 function canCreateRow(role) { return role === "admin" || role === "shimaa"; }
-function canDeleteRow(role) { return role === "admin"; }
+function canDeleteRow(role) { return role === "admin" || role === "shimaa"; }
 
 /* =========================================================================
    الحالة العامة + الدخول
@@ -667,6 +671,14 @@ function renderShipmentsTable() {
     const cells = FIELDS.map((f) => {
       const editable = canEditField(currentUser.role, f.key);
       const val = row[f.key] ?? "";
+      if (f.type === "select") {
+        const opts = [`<option value=""></option>`].concat(
+          f.options.map((o) => `<option value="${o}" ${val === o ? "selected" : ""}>${o}</option>`)
+        ).join("");
+        return `<td class="${editable ? "" : "locked"}">
+          <select data-id="${row.id}" data-key="${f.key}" ${editable ? "" : "disabled"}>${opts}</select>
+        </td>`;
+      }
       const type = f.type === "number" ? "number" : f.type === "date" ? "date" : "text";
       return `<td class="${editable ? "" : "locked"}">
         <input type="${type}" value="${String(val).replace(/"/g, "&quot;")}"
@@ -679,8 +691,9 @@ function renderShipmentsTable() {
     return `<tr>${cells}${saveCell}${delCell}</tr>`;
   }).join("");
 
-  body.querySelectorAll("input").forEach((inp) => {
-    inp.addEventListener("input", (e) => {
+  body.querySelectorAll("input, select").forEach((inp) => {
+    const evt = inp.tagName === "SELECT" ? "change" : "input";
+    inp.addEventListener(evt, (e) => {
       const id = e.target.dataset.id, key = e.target.dataset.key;
       if (!canEditField(currentUser.role, key)) return;
       if (!pendingEdits[id]) pendingEdits[id] = {};
