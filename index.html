@@ -180,6 +180,10 @@
   td select:not(:disabled):hover{border-color:#C9CBE0; background:#fff;}
   td select:not(:disabled):focus{border-color:var(--gold); background:#fff; box-shadow:0 0 0 3px var(--gold-pale);}
   td.locked select{background:transparent; border-color:transparent; color:#A6A9BE;}
+  .input-prefix-wrap{position:relative;}
+  .input-prefix-wrap input{padding-left:26px;}
+  .input-prefix{position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:13px; font-weight:700; pointer-events:none;}
+  td.locked .input-prefix{color:#C3C5D6;}
   td input:not(:disabled):hover{border-color:#C9CBE0; background:#fff;}
   td input:not(:disabled):focus{border-color:var(--gold); background:#fff; box-shadow:0 0 0 3px var(--gold-pale);}
   td.locked input{background:transparent; border-color:transparent;}
@@ -493,7 +497,7 @@ const FIELDS = [
   { key: "shipment_no", label: "رقم الشحنة", type: "text", owner: "shimaa" },
   { key: "form13", label: "نموذج 13", type: "select", owner: "shimaa", options: ["تم الاستلام", "لم يتم"] },
   { key: "bol", label: "بوليصه الشحن", type: "select", owner: "shimaa", options: ["تم الاستلام", "لم يتم"] },
-  { key: "invoice_value", label: "قيمة الفاتورة ($)", type: "number", owner: "shimaa" },
+  { key: "invoice_value", label: "قيمة الفاتورة", type: "number", owner: "shimaa", prefix: "$" },
   { key: "invoice_type", label: "نوع الفاتورة", type: "text", owner: "shimaa" },
   { key: "invoice_no", label: "رقم الفاتورة", type: "text", owner: "shimaa" },
   { key: "refund_request_date", label: "تقديم طلب الاسترداد", type: "date", owner: "manal" },
@@ -680,10 +684,14 @@ function renderShipmentsTable() {
         </td>`;
       }
       const type = f.type === "number" ? "number" : f.type === "date" ? "date" : "text";
-      return `<td class="${editable ? "" : "locked"}">
-        <input type="${type}" value="${String(val).replace(/"/g, "&quot;")}"
-          data-id="${row.id}" data-key="${f.key}" ${editable ? "" : "disabled"} />
-      </td>`;
+      const inputHtml = `<input type="${type}" value="${String(val).replace(/"/g, "&quot;")}"
+          data-id="${row.id}" data-key="${f.key}" ${editable ? "" : "disabled"} />`;
+      if (f.prefix) {
+        return `<td class="${editable ? "" : "locked"}">
+          <div class="input-prefix-wrap"><span class="input-prefix">${f.prefix}</span>${inputHtml}</div>
+        </td>`;
+      }
+      return `<td class="${editable ? "" : "locked"}">${inputHtml}</td>`;
     }).join("");
     const canEditThisRow = FIELDS.some((f) => canEditField(currentUser.role, f.key));
     const saveCell = `<td>${canEditThisRow ? `<button class="save-row-btn" data-saverow="${row.id}">حفظ</button><span class="saved-flag" data-savedflag="${row.id}"></span>` : ""}</td>`;
