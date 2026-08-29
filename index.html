@@ -233,6 +233,7 @@
   .btn-print:hover{background:#F5F5FA;}
 
   @media print{
+    @page{ size: landscape; margin: 8mm; }
     body{background:#fff;}
     aside.sidebar, .topbar, .toolbar, .del-btn, .save-row-btn, .saved-flag, .sidebar-reopen,
     .hint, #view-dashboard, #view-admin, .create-only{display:none !important;}
@@ -241,13 +242,14 @@
     .page-pad{padding:0;}
     .view{display:none !important;}
     #view-shipments.active{display:block !important;}
-    .table-wrap{border:none; box-shadow:none; border-radius:0; overflow:visible;}
-    table{font-size:11px;}
-    thead th{position:static; background:#fff; border-bottom:1.5px solid #333;}
-    td input, td select{border:none; padding:3px 4px; background:transparent !important; color:#000 !important; font-size:11px;}
-    tbody td{padding:3px;}
+    .table-wrap{border:none; box-shadow:none; border-radius:0; overflow:visible !important; width:100% !important;}
+    table{font-size:9px; table-layout:auto; width:100% !important;}
+    thead th{position:static; background:#fff; border-bottom:1.5px solid #333; min-width:0 !important; white-space:normal; padding:4px 3px; color:#000 !important;}
+    tbody td{padding:3px; min-width:0 !important;}
+    td input, td select{border:none; padding:2px 3px; background:transparent !important; color:#000 !important; font-size:9px; width:100%; min-width:0 !important; white-space:normal;}
     td.locked{background:transparent !important;}
     .input-prefix, .input-suffix{color:#000;}
+    .input-prefix-wrap input, .input-suffix-wrap input{padding-left:3px; padding-right:3px;}
   }
 </style>
 </head>
