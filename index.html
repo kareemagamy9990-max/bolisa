@@ -229,7 +229,26 @@
   .topbar-inner{display:flex; align-items:center;}
 
   .setup-banner{background:var(--gold-pale); border:1px solid var(--gold-soft); color:#8A5A00; padding:12px 32px; font-size:12.5px; line-height:1.9;}
-  .setup-banner code{background:#fff; padding:1px 6px; border-radius:5px; border:1px solid var(--gold-soft);}
+  .setup-banner code{background:#fff; padding:1px 6px; border-radius:5px; border:1px solid var(--gold-soft);}  .btn-print{background:#fff; color:var(--navy-800); border:1.5px solid var(--border); box-shadow:none;}
+  .btn-print:hover{background:#F5F5FA;}
+
+  @media print{
+    body{background:#fff;}
+    aside.sidebar, .topbar, .toolbar, .del-btn, .save-row-btn, .saved-flag, .sidebar-reopen,
+    .hint, #view-dashboard, #view-admin, .create-only{display:none !important;}
+    #appShell{display:block !important;}
+    main.content{padding:0; margin:0; width:100%;}
+    .page-pad{padding:0;}
+    .view{display:none !important;}
+    #view-shipments.active{display:block !important;}
+    .table-wrap{border:none; box-shadow:none; border-radius:0; overflow:visible;}
+    table{font-size:11px;}
+    thead th{position:static; background:#fff; border-bottom:1.5px solid #333;}
+    td input, td select{border:none; padding:3px 4px; background:transparent !important; color:#000 !important; font-size:11px;}
+    tbody td{padding:3px;}
+    td.locked{background:transparent !important;}
+    .input-prefix, .input-suffix{color:#000;}
+  }
 </style>
 </head>
 <body>
@@ -338,6 +357,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
             <input class="search-input" id="filterCountry" placeholder="فلترة بالدولة..." />
           </div>
+          <button class="btn-small btn-print" id="printBtn">🖨 طباعة</button>
           <button class="btn-small create-only hidden" id="addRowBtn">+ شحنة جديدة</button>
         </div>
         <div class="table-wrap">
@@ -776,6 +796,10 @@ function renderShipmentsTable() {
 }
 
 document.getElementById("filterCountry").addEventListener("input", renderShipmentsTable);
+
+document.getElementById("printBtn").addEventListener("click", () => {
+  window.print();
+});
 
 document.getElementById("addRowBtn").addEventListener("click", () => {
   if (!canCreateRow(currentUser.role)) return;
