@@ -567,6 +567,7 @@ const FIELDS = [
   { key: "invoice_no", label: "رقم الفاتورة", type: "text", owner: "shimaa" },
   { key: "refund_percentage", label: "نسبة المسترد من الفاتورة", type: "number", owner: "manal", suffix: "%" },
   { key: "refund_request_date", label: "تقديم طلب الاسترداد", type: "date", owner: "manal" },
+  { key: "receipt_no", label: "رقم الإيصال", type: "text", owner: ["manal", "finance"] },
   { key: "refund_value", label: "قيمة الاسترداد بالدولار", type: "number", owner: "finance" },
   { key: "notes", label: "ملاحظات", type: "text", owner: "finance" },
 ];
@@ -578,7 +579,12 @@ const ROLES = {
   finance: { label: "مسئول الماليه", color: "var(--finance)" },
 };
 
-function canEditField(role, key) { if (role === "admin") return true; const f = FIELDS.find((f) => f.key === key); return f?.owner === role; }
+function canEditField(role, key) {
+  if (role === "admin") return true;
+  const f = FIELDS.find((f) => f.key === key);
+  if (!f) return false;
+  return Array.isArray(f.owner) ? f.owner.includes(role) : f.owner === role;
+}
 function canCreateRow(role) { return role === "admin" || role === "shimaa"; }
 function canDeleteRow(role) { return role === "admin" || role === "shimaa"; }
 
