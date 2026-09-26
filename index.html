@@ -125,17 +125,7 @@
   .logout-btn:hover{background:rgba(255,255,255,.12); color:#fff;}
 
   main.content{flex:1; min-width:0;}
-  .topbar{background:var(--surface); border-bottom:1px solid var(--border); padding:18px 32px; position:sticky; top:0; z-index:4; display:flex; align-items:center; justify-content:space-between; gap:14px;}
-  .notif-wrap{position:relative;}
-  .notif-bell{position:relative; width:38px; height:38px; border-radius:50%; background:#F3F3F9; color:var(--navy-800); display:flex; align-items:center; justify-content:center;}
-  .notif-bell:hover{background:#E9E9F5;}
-  .notif-badge{position:absolute; top:-3px; left:-3px; background:var(--danger); color:#fff; font-size:10px; font-weight:800; min-width:17px; height:17px; border-radius:999px; display:flex; align-items:center; justify-content:center; padding:0 4px;}
-  .notif-panel{position:absolute; left:0; top:48px; width:320px; max-height:400px; overflow-y:auto; background:#fff; border:1px solid var(--border); border-radius:var(--radius-md); box-shadow:var(--shadow-pop); z-index:20; padding:14px;}
-  .notif-panel-title{font-size:13px; font-weight:800; color:var(--navy-800); margin:0 0 10px;}
-  .notif-item{padding:10px; border-radius:var(--radius-sm); background:#FFF7E8; margin-bottom:8px; font-size:12.5px; line-height:1.8;}
-  .notif-item b{color:var(--navy-800);}
-  .notif-item .days-left{color:var(--danger); font-weight:800;}
-  .notif-empty{color:var(--muted); font-size:12.5px; text-align:center; padding:14px 0;}
+  .topbar{background:var(--surface); border-bottom:1px solid var(--border); padding:18px 32px; position:sticky; top:0; z-index:4;}
   .topbar h1{font-size:19px; font-weight:800; margin:0; color:var(--navy-800);}
   .topbar p{margin:2px 0 0; font-size:12.5px; color:var(--muted);}
 
@@ -185,6 +175,16 @@
   tbody td{padding:7px; border-bottom:1px solid #F3F3F8; min-width:150px;}
   tbody tr:hover td{background:#FBFBFE;}
   tbody tr:last-child td{border-bottom:none;}
+  tr.row-status-green td{background:#EAFBF3;}
+  tr.row-status-green:hover td{background:#DFF7EC;}
+  tr.row-status-yellow td{background:#FFF9E6;}
+  tr.row-status-yellow:hover td{background:#FFF3CC;}
+  tr.row-status-red td{background:#FDECEC;}
+  tr.row-status-red:hover td{background:#FBDCDC;}
+  tr[class*="row-status-"] td:first-child{border-right:4px solid transparent;}
+  tr.row-status-green td:first-child{border-right-color:#12967A;}
+  tr.row-status-yellow td:first-child{border-right-color:#D97706;}
+  tr.row-status-red td:first-child{border-right-color:#E0524B;}
   td input{margin:0; padding:11px 12px; font-size:15px; border-radius:var(--radius-sm); border:1.5px solid var(--border); background:#FDFDFE; width:100%; min-width:130px;}
   td select{margin:0; padding:11px 12px; font-size:15px; border-radius:var(--radius-sm); border:1.5px solid var(--border); background:#FDFDFE; width:100%; min-width:130px; font-family:inherit; color:var(--text);}
   td select:not(:disabled):hover{border-color:#C9CBE0; background:#fff;}
@@ -201,7 +201,7 @@
   td input:not(:disabled):hover{border-color:#C9CBE0; background:#fff;}
   td input:not(:disabled):focus{border-color:var(--gold); background:#fff; box-shadow:0 0 0 3px var(--gold-pale);}
   td.locked input{background:transparent; border-color:transparent;}
-  td.locked{background:repeating-linear-gradient(135deg, #FAFAFD, #FAFAFD 7px, #F3F3F8 7px, #F3F3F8 14px);}
+  tr td.locked{background:repeating-linear-gradient(135deg, #FAFAFD, #FAFAFD 7px, #F3F3F8 7px, #F3F3F8 14px);}
   td.locked input{color:#A6A9BE; cursor:not-allowed;}
   .del-btn{background:transparent; color:var(--danger); font-size:12px; padding:6px 10px; font-weight:700; border-radius:var(--radius-sm);}
   .del-btn:hover{background:#FDECEC;}
@@ -241,25 +241,12 @@
   .setup-banner{background:var(--gold-pale); border:1px solid var(--gold-soft); color:#8A5A00; padding:12px 32px; font-size:12.5px; line-height:1.9;}
   .setup-banner code{background:#fff; padding:1px 6px; border-radius:5px; border:1px solid var(--gold-soft);}  .btn-print{background:#fff; color:var(--navy-800); border:1.5px solid var(--border); box-shadow:none;}
   .btn-print:hover{background:#F5F5FA;}
-  .btn-report{background:#fff; color:var(--navy-800); border:1.5px solid var(--border); box-shadow:none;}
-  .btn-report:hover{background:#F5F5FA;}
-  .select-col{width:34px !important; min-width:34px !important;}
-  #reportPrintArea{display:none;}
-  .report-section{margin-bottom:22px;}
-  .report-section h3{font-size:14px; margin:0 0 8px; color:var(--navy-800); border-bottom:2px solid var(--gold); padding-bottom:6px; display:inline-block;}
-  .report-title-block{margin-bottom:18px;}
-  .report-title-block h2{margin:0 0 4px; font-size:18px;}
-  .report-title-block p{margin:0; font-size:12px; color:var(--muted);}
-  .report-table{width:100%; border-collapse:collapse; font-size:11.5px; margin-bottom:6px;}
-  .report-table th{text-align:right; padding:6px 8px; background:#F5F5FA; border-bottom:1px solid #ccc;}
-  .report-table td{padding:6px 8px; border-bottom:1px solid #eee;}
-  .report-empty{color:var(--muted); font-size:12px; padding:6px 0 16px;}
 
   @media print{
     @page{ size: landscape; margin: 8mm; }
     body{background:#fff;}
     aside.sidebar, .topbar, .toolbar, .del-btn, .save-row-btn, .saved-flag, .sidebar-reopen,
-    .hint, #view-dashboard, #view-admin, .create-only, .select-col{display:none !important;}
+    .hint, #view-dashboard, #view-admin, .create-only{display:none !important;}
     #appShell{display:block !important;}
     main.content{padding:0; margin:0; width:100%;}
     .page-pad{padding:0;}
@@ -273,10 +260,6 @@
     td.locked{background:transparent !important;}
     .input-prefix, .input-suffix{color:#000;}
     .input-prefix-wrap input, .input-suffix-wrap input{padding-left:3px; padding-right:3px;}
-
-    body.printing-report .table-wrap, body.printing-report .hint{display:none !important;}
-    body.printing-report #reportPrintArea{display:block !important;}
-    body:not(.printing-report) #reportPrintArea{display:none !important;}
   }
 </style>
 </head>
@@ -366,16 +349,6 @@
           <p id="pageSub">ملخص سريع لحالة طلبات الاسترداد</p>
         </div>
       </div>
-      <div class="notif-wrap">
-        <button class="notif-bell" id="notifBellBtn" aria-label="الإشعارات">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="notif-badge hidden" id="notifBadge">0</span>
-        </button>
-        <div class="notif-panel hidden" id="notifPanel">
-          <p class="notif-panel-title">شحنات قربت تخلص مهلتها</p>
-          <div id="notifList"></div>
-        </div>
-      </div>
     </div>
     <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
@@ -397,7 +370,6 @@
             <input class="search-input" id="filterCountry" placeholder="فلترة بالدولة..." />
           </div>
           <button class="btn-small btn-print" id="printBtn">🖨 طباعة</button>
-          <button class="btn-small btn-report" id="reportBtn">📋 تقرير</button>
           <button class="btn-small create-only hidden" id="addRowBtn">+ شحنة جديدة</button>
         </div>
         <div class="table-wrap">
@@ -406,8 +378,7 @@
             <tbody id="tableBody"></tbody>
           </table>
         </div>
-        <p class="hint"><span class="swatch"></span> الخلايا المخططة مش خاصة بيك، بتتعرض للمتابعة بس. حدد أي شحنات بالمربعات وبعدين دوس "تقرير"، أو سيبها من غير تحديد عشان التقرير يشمل كل الشحنات.</p>
-        <div id="reportPrintArea"></div>
+        <p class="hint"><span class="swatch"></span> الخلايا المخططة مش خاصة بيك، بتتعرض للمتابعة بس.</p>
       </section>
 
       <!-- ADMIN -->
@@ -567,7 +538,8 @@ const FIELDS = [
   { key: "invoice_no", label: "رقم الفاتورة", type: "text", owner: "shimaa" },
   { key: "refund_percentage", label: "نسبة المسترد من الفاتورة", type: "number", owner: "manal", suffix: "%" },
   { key: "refund_request_date", label: "تقديم طلب الاسترداد", type: "date", owner: "manal" },
-  { key: "receipt_no", label: "رقم الإيصال الخاص بالشحنة", type: "text", owner: ["manal", "finance"] },
+  { key: "submitted_to_authority_date", label: "تاريخ تسليم الملف للهيئة", type: "date", owner: "manal" },
+  { key: "files_sent_to_manal_date", label: "تاريخ تسليم الملفات لأستاذة منال", type: "date", owner: "finance" },
   { key: "refund_value", label: "قيمة الاسترداد بالدولار", type: "number", owner: "finance" },
   { key: "notes", label: "ملاحظات", type: "text", owner: "finance" },
 ];
@@ -579,12 +551,7 @@ const ROLES = {
   finance: { label: "مسئول الماليه", color: "var(--finance)" },
 };
 
-function canEditField(role, key) {
-  if (role === "admin") return true;
-  const f = FIELDS.find((f) => f.key === key);
-  if (!f) return false;
-  return Array.isArray(f.owner) ? f.owner.includes(role) : f.owner === role;
-}
+function canEditField(role, key) { if (role === "admin") return true; const f = FIELDS.find((f) => f.key === key); return f?.owner === role; }
 function canCreateRow(role) { return role === "admin" || role === "shimaa"; }
 function canDeleteRow(role) { return role === "admin" || role === "shimaa"; }
 
@@ -593,16 +560,6 @@ function canDeleteRow(role) { return role === "admin" || role === "shimaa"; }
    ========================================================================= */
 let currentUser = null;
 let shipmentsCache = [];
-
-function sortByDate(rows) {
-  return [...rows].sort((a, b) => {
-    const ad = a.date || "", bd = b.date || "";
-    if (!ad && !bd) return 0;
-    if (!ad) return 1;
-    if (!bd) return -1;
-    return bd.localeCompare(ad); // الأحدث أولًا
-  });
-}
 let unsubShipments = null;
 let unsubUsers = null;
 
@@ -685,10 +642,9 @@ function enterApp() {
   buildTableHead();
   switchView("dashboard");
   unsubShipments = Store.listenShipments((rows) => {
-    shipmentsCache = sortByDate(rows);
+    shipmentsCache = rows;
     renderShipmentsTable();
     renderDashboard();
-    renderNotifications();
   });
   if (currentUser.role === "admin") unsubUsers = Store.listenUsers(renderUsersTable);
 }
@@ -739,35 +695,32 @@ function switchView(name) {
    ========================================================================= */
 function buildTableHead() {
   document.getElementById("tableHead").innerHTML =
-    `<th class="select-col"><input type="checkbox" id="selectAllCheckbox" /></th>` +
     FIELDS.map((f) => `<th>${f.label}</th>`).join("") + `<th>حفظ</th>` + (canDeleteRow(currentUser.role) ? "<th></th>" : "");
-  document.getElementById("selectAllCheckbox").addEventListener("change", (e) => {
-    const visibleIds = getVisibleRows().map((r) => r.id);
-    if (e.target.checked) visibleIds.forEach((id) => selectedRows.add(id));
-    else visibleIds.forEach((id) => selectedRows.delete(id));
-    renderShipmentsTable();
-  });
-}
-
-const selectedRows = new Set();
-function getVisibleRows() {
-  const filter = document.getElementById("filterCountry").value.trim();
-  return filter ? shipmentsCache.filter((r) => (r.country || "").includes(filter)) : shipmentsCache;
 }
 
 const pendingEdits = {}; // { rowId: { field: value } }
 
+// لون الصف حسب حالة نموذج 13 وبوليصة الشحن:
+// الاتنين "تم الاستلام" -> أخضر | واحد بس ناقص -> أصفر | الاتنين ناقصين -> أحمر
+function getRowStatusClass(row) {
+  const f13Done = row.form13 === "تم الاستلام";
+  const bolDone = row.bol === "تم الاستلام";
+  if (f13Done && bolDone) return "row-status-green";
+  if (!f13Done && !bolDone) return "row-status-red";
+  return "row-status-yellow";
+}
+
 function renderShipmentsTable() {
-  const rows = getVisibleRows();
+  const filter = document.getElementById("filterCountry").value.trim();
+  const rows = filter ? shipmentsCache.filter((r) => (r.country || "").includes(filter)) : shipmentsCache;
   const body = document.getElementById("tableBody");
 
   if (rows.length === 0) {
-    body.innerHTML = `<tr class="empty-row"><td colspan="${FIELDS.length + 3}">مفيش شحنات لسه — ابدأ بإضافة شحنة جديدة</td></tr>`;
+    body.innerHTML = `<tr class="empty-row"><td colspan="${FIELDS.length + 2}">مفيش شحنات لسه — ابدأ بإضافة شحنة جديدة</td></tr>`;
     return;
   }
 
   body.innerHTML = rows.map((row) => {
-    const checkCell = `<td class="select-col"><input type="checkbox" class="row-select" data-rowid="${row.id}" ${selectedRows.has(row.id) ? "checked" : ""} /></td>`;
     const cells = FIELDS.map((f) => {
       const editable = canEditField(currentUser.role, f.key);
       const val = row[f.key] ?? "";
@@ -797,15 +750,8 @@ function renderShipmentsTable() {
     const canEditThisRow = FIELDS.some((f) => canEditField(currentUser.role, f.key));
     const saveCell = `<td>${canEditThisRow ? `<button class="save-row-btn" data-saverow="${row.id}">حفظ</button><span class="saved-flag" data-savedflag="${row.id}"></span>` : ""}</td>`;
     const delCell = canDeleteRow(currentUser.role) ? `<td><button class="del-btn" data-del="${row.id}">حذف</button></td>` : "";
-    return `<tr>${checkCell}${cells}${saveCell}${delCell}</tr>`;
+    return `<tr class="${getRowStatusClass(row)}" data-rowtr="${row.id}">${cells}${saveCell}${delCell}</tr>`;
   }).join("");
-
-  body.querySelectorAll(".row-select").forEach((cb) => {
-    cb.addEventListener("change", (e) => {
-      const id = e.target.dataset.rowid;
-      if (e.target.checked) selectedRows.add(id); else selectedRows.delete(id);
-    });
-  });
 
   body.querySelectorAll("input, select").forEach((inp) => {
     const evt = inp.tagName === "SELECT" ? "change" : "input";
@@ -840,6 +786,12 @@ function renderShipmentsTable() {
           pendingEdits[id].shortages = shortageText;
           const shortagesInput = body.querySelector(`[data-id="${id}"][data-key="shortages"]`);
           if (shortagesInput) shortagesInput.value = shortageText;
+        }
+        // نحدّث لون الصف فورًا حسب الحالة الحالية (حتى قبل الحفظ)
+        const trEl = body.querySelector(`[data-rowtr="${id}"]`);
+        if (trEl) {
+          trEl.classList.remove("row-status-green", "row-status-yellow", "row-status-red");
+          trEl.classList.add(getRowStatusClass({ form13: f13, bol: bolVal }));
         }
       }
 
@@ -877,74 +829,6 @@ document.getElementById("filterCountry").addEventListener("input", renderShipmen
 
 document.getElementById("printBtn").addEventListener("click", () => {
   window.print();
-});
-
-document.getElementById("reportBtn").addEventListener("click", () => {
-  const source = selectedRows.size > 0
-    ? shipmentsCache.filter((r) => selectedRows.has(r.id))
-    : shipmentsCache;
-
-  if (source.length === 0) { alert("مفيش شحنات لعمل تقرير عنها."); return; }
-
-  const isDone = (v) => v === "تم الاستلام";
-  const notProcessed = [];
-  const missingBol = [];
-  const missingForm13 = [];
-  const missingBoth = [];
-
-  source.forEach((row) => {
-    const f13 = row.form13 || "";
-    const bolVal = row.bol || "";
-    const f13Empty = !f13, bolEmpty = !bolVal;
-
-    if (f13Empty && bolEmpty) { notProcessed.push(row); return; }
-    const f13Missing = !isDone(f13);
-    const bolMissing = !isDone(bolVal);
-    if (f13Missing && bolMissing) missingBoth.push(row);
-    else if (bolMissing) missingBol.push(row);
-    else if (f13Missing) missingForm13.push(row);
-  });
-
-  function rowsTable(rows) {
-    if (rows.length === 0) return `<p class="report-empty">لا يوجد</p>`;
-    return `<table class="report-table">
-      <thead><tr><th>التاريخ</th><th>الدولة</th><th>اسم الشركة</th><th>رقم الشحنة</th><th>نموذج 13</th><th>بوليصة الشحن</th></tr></thead>
-      <tbody>${rows.map((r) => `<tr>
-        <td>${r.date || "-"}</td><td>${r.country || "-"}</td><td>${r.company || "-"}</td>
-        <td>${r.shipment_no || "-"}</td><td>${r.form13 || "لم يتم إدخال"}</td><td>${r.bol || "لم يتم إدخال"}</td>
-      </tr>`).join("")}</tbody>
-    </table>`;
-  }
-
-  const todayStr = new Date().toLocaleDateString("ar-EG");
-  document.getElementById("reportPrintArea").innerHTML = `
-    <div class="report-title-block">
-      <h2>تقرير متابعة الشحنات — EgyGulf Foods</h2>
-      <p>تاريخ التقرير: ${todayStr} — عدد الشحنات في التقرير: ${source.length}${selectedRows.size > 0 ? " (شحنات محددة)" : " (كل الشحنات)"}</p>
-    </div>
-    <div class="report-section">
-      <h3>الشحنات التي لم يتم التعامل عليها (${notProcessed.length})</h3>
-      ${rowsTable(notProcessed)}
-    </div>
-    <div class="report-section">
-      <h3>ناقص لها بوليصة الشحن فقط (${missingBol.length})</h3>
-      ${rowsTable(missingBol)}
-    </div>
-    <div class="report-section">
-      <h3>ناقص لها نموذج 13 فقط (${missingForm13.length})</h3>
-      ${rowsTable(missingForm13)}
-    </div>
-    <div class="report-section">
-      <h3>ناقص فيها نموذج 13 وبوليصة الشحن معًا (${missingBoth.length})</h3>
-      ${rowsTable(missingBoth)}
-    </div>
-  `;
-
-  document.body.classList.add("printing-report");
-  window.print();
-});
-window.addEventListener("afterprint", () => {
-  document.body.classList.remove("printing-report");
 });
 
 document.getElementById("addRowBtn").addEventListener("click", () => {
@@ -1001,65 +885,8 @@ function renderDashboard() {
 }
 
 /* =========================================================================
-   إشعارات قرب انتهاء مهلة الاسترداد (سنة من تاريخ الشحنة، تنبيه قبل 3 شهور)
+   إدارة المستخدمين
    ========================================================================= */
-const DEADLINE_MONTHS = 12;
-const WARN_BEFORE_MONTHS = 3;
-const MS_PER_DAY = 86400000;
-
-function computeNotifications() {
-  const today = new Date();
-  const items = [];
-  shipmentsCache.forEach((row) => {
-    if (!row.date) return;
-    const hasRefund = row.refund_value !== "" && row.refund_value != null && row.refund_value !== 0;
-    if (hasRefund) return; // اتصرف بالفعل، مش محتاج تنبيه
-    const shipDate = new Date(row.date);
-    if (isNaN(shipDate.getTime())) return;
-    const deadline = new Date(shipDate); deadline.setMonth(deadline.getMonth() + DEADLINE_MONTHS);
-    const warnStart = new Date(deadline); warnStart.setMonth(warnStart.getMonth() - WARN_BEFORE_MONTHS);
-    if (today.getTime() >= warnStart.getTime()) {
-      const daysLeft = Math.ceil((deadline.getTime() - today.getTime()) / MS_PER_DAY);
-      items.push({ row, daysLeft });
-    }
-  });
-  items.sort((a, b) => a.daysLeft - b.daysLeft);
-  return items;
-}
-
-function renderNotifications() {
-  const items = computeNotifications();
-  const badge = document.getElementById("notifBadge");
-  const list = document.getElementById("notifList");
-
-  if (items.length === 0) {
-    badge.classList.add("hidden");
-    list.innerHTML = `<p class="notif-empty">مفيش شحنات قربت تخلص مهلتها</p>`;
-    return;
-  }
-
-  badge.textContent = items.length;
-  badge.classList.remove("hidden");
-
-  list.innerHTML = items.map(({ row, daysLeft }) => {
-    const label = row.company || row.country || "شحنة بدون اسم";
-    const timeText = daysLeft < 0
-      ? `<span class="days-left">فاتت المهلة من ${Math.abs(daysLeft)} يوم</span>`
-      : `<span class="days-left">باقي ${daysLeft} يوم</span>`;
-    return `<div class="notif-item"><b>${label}</b> — ${row.country || ""}<br/>${timeText}</div>`;
-  }).join("");
-}
-
-document.getElementById("notifBellBtn").addEventListener("click", (e) => {
-  e.stopPropagation();
-  document.getElementById("notifPanel").classList.toggle("hidden");
-});
-document.addEventListener("click", (e) => {
-  const panel = document.getElementById("notifPanel");
-  if (!panel.classList.contains("hidden") && !panel.contains(e.target)) panel.classList.add("hidden");
-});
-
-
 function renderUsersTable(users) {
   const body = document.getElementById("usersBody");
   body.innerHTML = users.map((u) => `
