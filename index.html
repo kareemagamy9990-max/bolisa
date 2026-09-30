@@ -369,6 +369,12 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
             <input class="search-input" id="filterCountry" placeholder="فلترة بالدولة..." />
           </div>
+          <select id="sortOrder" style="width:auto;padding:9px 14px;border-radius:999px;font-size:13px;">
+            <option value="date_asc">الترتيب: بالتاريخ (الأقدم أولاً)</option>
+            <option value="date_desc">الترتيب: بالتاريخ (الأحدث أولاً)</option>
+            <option value="created_asc">الترتيب: حسب الإضافة</option>
+            <option value="country">الترتيب: حسب الدولة</option>
+          </select>
           <button class="btn-small btn-print" id="printBtn">🖨 طباعة</button>
           <button class="btn-small create-only hidden" id="addRowBtn">+ شحنة جديدة</button>
         </div>
@@ -477,8 +483,12 @@ const Store = FIREBASE_CONFIGURED ? {
   async addUser(u) { await db.collection("users").add(u); },
   async deleteUser(id) { await db.collection("users").doc(id).delete(); },
   listenShipments(cb) {
-    return db.collection("shipments").orderBy("createdAt", "desc").onSnapshot((snap) => {
-      cb(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+    return db.collection("shipments").onSnapshot((snap) => {
+      cb(snap.docs.map((d) => {
+        const data = d.data({ serverTimestamps: "estimate" });
+        const ts = data.createdAt && data.createdAt.toMillis ? data.createdAt.toMillis() : 0;
+        return { id: d.id, ...data, _ts: ts };
+      }));
     });
   },
   listenUsers(cb) {
@@ -712,7 +722,8 @@ function getRowStatusClass(row) {
 
 function renderShipmentsTable() {
   const filter = document.getElementById("filterCountry").value.trim();
-  const rows = filter ? shipmentsCache.filter((r) => (r.country || "").includes(filter)) : shipmentsCache;
+  const filtered = filter ? shipmentsCache.filter((r) => (r.country || "").includes(filter)) : shipmentsCache;
+  const rows = sortShipments(filtered);
   const body = document.getElementById("tableBody");
 
   if (rows.length === 0) {
@@ -826,6 +837,27 @@ function renderShipmentsTable() {
 }
 
 document.getElementById("filterCountry").addEventListener("input", renderShipmentsTable);
+
+// ترتيب ثابت للشحنات بدل الترتيب العشوائي
+function sortShipments(list) {
+  const mode = document.getElementById("sortOrder").value;
+  const byCreated = (a, b) => (a._ts || 0) - (b._ts || 0) || String(a.id).localeCompare(String(b.id));
+  const arr = [...list];
+  if (mode === "created_asc") return arr.sort(byCreated);
+  if (mode === "country") return arr.sort((a, b) => (a.country || "\uffff").localeCompare(b.country || "\uffff", "ar") || byCreated(a, b));
+  const dir = mode === "date_desc" ? -1 : 1;
+  return arr.sort((a, b) => {
+    if (!a.date && !b.date) return byCreated(a, b);
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return dir * a.date.localeCompare(b.date) || byCreated(a, b);
+  });
+}
+try { const saved = localStorage.getItem("crm_sort_order"); if (saved) document.getElementById("sortOrder").value = saved; } catch (e) {}
+document.getElementById("sortOrder").addEventListener("change", (e) => {
+  try { localStorage.setItem("crm_sort_order", e.target.value); } catch (err) {}
+  renderShipmentsTable();
+});
 
 document.getElementById("printBtn").addEventListener("click", () => {
   window.print();
